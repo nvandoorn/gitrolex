@@ -12,3 +12,4 @@ netlify.toml
 /.vscode
 
 /storybook-static
+*.o

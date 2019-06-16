@@ -45,9 +45,50 @@ void gitrolex_parseArgs(struct State_t *s, int argc, const char *argv[]) {
   }
 }
 
+enum Error_t gitrolex_checkin(struct State_t *s){
+  return -1;
+}
+
+enum Error_t gitrolex_checkout(struct State_t *s){
+  return -1;
+}
+
+enum Error_t gitrolex_export(struct State_t *s) {
+  return -1;
+}
+
+enum Error_t gitrolex_status(struct State_t *s) {
+  return -1;
+}
+
+void gitrolex_mapStateToTask(struct State_t *s) {
+  enum Error_t r;
+  switch(s->task) {
+    case STATUS:
+      gitrolex_status(s);
+      break;
+    case EXPORT:
+      r = gitrolex_export(s);
+      break;
+    case TRACK:
+      r = gitrolex_checkout(s);
+      break;
+    case PAUSE:
+      r = gitrolex_checkin(s);
+      break;
+    case PLAY:
+      r = gitrolex_checkout(s);
+      break;
+    case ERROR:
+    default:
+      printError("Usage ./gitrolex status | export | pause | play | track <branch-name>")
+      break;
+  }
+}
+
 int gitrolex_core(int argc, const char* argv[]) {
   struct State_t state;
   gitrolex_parseArgs(&state, argc, argv);
-  printf("Usage ./gitrolex status | export | track <branch-name>\n");
+  gitrolex_mapStateToTask(&state);
 }
 

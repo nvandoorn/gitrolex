@@ -2,8 +2,8 @@
 # http://www.cs.colby.edu/maxwell/courses/tutorials/maketutor/makefile.4
 CC=gcc
 CFLAGS=-I. -I./segfault-suite -pthread -Wall
-DEPS=segfault-suite/test-lib.h core.h
-OBJ=segfault-suite/test-lib.o core.o
+DEPS=segfault-suite/test-lib.h core.h database.h
+OBJ=segfault-suite/test-lib.o core.o database.o
 MAIN_OBJ=gitrolex.o
 TEST_OBJ=core.test.o
 

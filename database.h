@@ -23,5 +23,4 @@ enum DatabaseError_t {
 enum DatabaseError_t database_getDouble(struct *Database_t db, const char *path, double *val);
 enum DatabaseError_t database_setDouble(struct *Database_t db, const char *path, double *val);
 
-
 #endif

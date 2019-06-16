@@ -14,7 +14,7 @@ struct TimeEnty_t {
 };
 
 enum DatabaseError_t {
-  OK = 0,
+  DB_OK = 0,
   OUT_OF_SPACE
 };
 

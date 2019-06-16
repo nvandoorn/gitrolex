@@ -26,6 +26,12 @@ void gitrolex_parseArgs(struct State_t *s, int argc, const char *argv[]) {
   else if(!strcmp(task, "export")) {
     s->task = EXPORT;
   }
+  else if(!strcmp(task, "pause")) {
+    s->task = PAUSE;
+  }
+  else if(!strcmp(task, "play")) {
+    s->task = PLAY;
+  }
   else if(!strcmp(task, "track")) {
     // if we're tracking time,
     // we need a branch name stored

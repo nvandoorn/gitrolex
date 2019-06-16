@@ -10,12 +10,18 @@ enum Task_t {
   ERROR = -1,
   STATUS = 0,
   EXPORT,
-  TRACK
+  TRACK,
+  PAUSE,
+  PLAY
 };
 
 struct State_t {
   enum Task_t task;
   char taskArgs[1024];
+};
+
+enum Error_t {
+  OK = 0
 };
 
 void gitrolex_parseArgs(struct State_t *s, int argc, const char *argv[]);

@@ -4,15 +4,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-/**
- * This file implements a simple key value database using
- * double precision floating point numbers. Strings may need to
- * be supported at some point
- */
+#define IN true
+#define OUT false
 
-struct Database_t {
-  char *path;
-  int maxSize; // in bytes
+struct TimeEnty_t {
+  int datetime;
+  bool direction; // IN || OUT
 };
 
 enum DatabaseError_t {
@@ -20,7 +17,7 @@ enum DatabaseError_t {
   OUT_OF_SPACE
 };
 
-enum DatabaseError_t database_getDouble(struct *Database_t db, const char *path, double *val);
-enum DatabaseError_t database_setDouble(struct *Database_t db, const char *path, double *val);
+enum DatabaseError_t database_pushEntry(const char *path, struct TimeEnty_t *entry);
+enum DatabaseError_t database_getEntries(const char *path, struct TimeEnty_t *out, int *size);
 
 #endif

@@ -4,6 +4,15 @@
 #include <stdio.h>
 #include <string.h>
 
+void printError(const char *s) {
+  printf("ERROR: %s\n", s);
+}
+
+
+void printInfo(const char *s) {
+  printf("INFO: %s\n", s);
+}
+
 void gitrolex_parseArgs(struct State_t *s, int argc, const char *argv[]) {
   const char *task;
   if(argc < 2) {

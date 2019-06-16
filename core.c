@@ -14,6 +14,7 @@ void printInfo(const char *s) {
   printf("INFO: %s\n", s);
 }
 
+
 void gitrolex_parseArgs(struct State_t *s, int argc, const char *argv[]) {
   const char *task;
   if(argc < 2) {
@@ -46,12 +47,23 @@ void gitrolex_parseArgs(struct State_t *s, int argc, const char *argv[]) {
   }
 }
 
-enum Error_t gitrolex_checkin(struct State_t *s){
-  return -1;
+enum Error_t pushNow(struct State_t *s, bool direction) {
+  enum DatabaseError_t r;
+  struct TimeEnty_t entry = {
+    .direction = direction,
+    .datetime = time(NULL)
+  };
+  r = database_pushEntry(s->taskArgs, &entry);
+  gitrolex_status(s);
+  return r == OK ? OK : DB_ERROR;
 }
 
 enum Error_t gitrolex_checkout(struct State_t *s){
-  return -1;
+  return pushNow(s, OUT);
+}
+
+enum Error_t gitrolex_checkin(struct State_t *s){
+  return pushNow(s, IN);
 }
 
 enum Error_t gitrolex_export(struct State_t *s) {

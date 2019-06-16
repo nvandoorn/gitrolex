@@ -21,7 +21,8 @@ struct State_t {
 };
 
 enum Error_t {
-  OK = 0
+  OK = 0,
+  DB_ERROR
 };
 
 void gitrolex_parseArgs(struct State_t *s, int argc, const char *argv[]);

@@ -47,6 +47,23 @@ void gitrolex_parseArgs(struct State_t *s, int argc, const char *argv[]) {
   }
 }
 
+enum Error_t gitrolex_status(struct State_t *s) {
+  enum DatabaseError_t r;
+  char msg[512];
+  int size = 2048;
+  struct TimeEnty_t entries[2048];
+  r = database_getEntries(s->taskArgs, entries, &size);
+  if(r != OK) {
+    printError("Ya blew it");
+  }
+  struct TimeEnty_t *start = entries;
+  struct TimeEnty_t *end = &entries[size - 1];
+  long diff = end->datetime - start->datetime;
+  sprintf(msg, "You've been working on %s for %ld seconds", s->taskArgs, diff);
+  printInfo(msg);
+  return OK;
+}
+
 enum Error_t pushNow(struct State_t *s, bool direction) {
   enum DatabaseError_t r;
   struct TimeEnty_t entry = {
@@ -55,7 +72,7 @@ enum Error_t pushNow(struct State_t *s, bool direction) {
   };
   r = database_pushEntry(s->taskArgs, &entry);
   gitrolex_status(s);
-  return r == OK ? OK : DB_ERROR;
+  return r == DB_OK ? OK : DB_ERROR;
 }
 
 enum Error_t gitrolex_checkout(struct State_t *s){
@@ -70,9 +87,6 @@ enum Error_t gitrolex_export(struct State_t *s) {
   return -1;
 }
 
-enum Error_t gitrolex_status(struct State_t *s) {
-  return -1;
-}
 
 void gitrolex_mapStateToTask(struct State_t *s) {
   enum Error_t r;
@@ -94,7 +108,7 @@ void gitrolex_mapStateToTask(struct State_t *s) {
       break;
     case ERROR:
     default:
-      printError("Usage ./gitrolex status | export | pause | play | track <branch-name>")
+      printError("Usage ./gitrolex status | export | pause | play | track <branch-name>");
       break;
   }
 }

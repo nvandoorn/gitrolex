@@ -8,7 +8,7 @@
 #define OUT false
 
 struct TimeEnty_t {
-  int datetime;
+  long datetime;
   bool direction; // IN || OUT
 };
 

@@ -39,3 +39,9 @@ done:
   *size = i;
   return DB_OK;
 }
+
+enum DatabaseError_t database_nuke(const char *path) {
+  char *filePath[1024];
+  database_prefixPath(path, filePath);
+  remove(filePath);
+}

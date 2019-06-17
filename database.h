@@ -20,5 +20,6 @@ enum DatabaseError_t {
 
 enum DatabaseError_t database_pushEntry(const char *path, struct TimeEnty_t *entry);
 enum DatabaseError_t database_getEntries(const char *path, struct TimeEnty_t *out, int *size);
+enum DatabaseError_t database_nuke(const char *path);
 
 #endif

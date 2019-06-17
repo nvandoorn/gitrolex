@@ -1,8 +1,10 @@
 #include "test-lib.h"
 #include "core.h"
+#include "database.test.h"
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 int parseArgsTest() {
   // mocks
@@ -42,4 +44,5 @@ fail:
 
 int main() {
   syncTest("gitrolex_parseArgs", "Failed to parse command line arguments", parseArgsTest);
+  database_test();
 }

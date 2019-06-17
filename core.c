@@ -15,6 +15,14 @@ void printInfo(const char *s) {
   printf("INFO: %s\n", s);
 }
 
+char* replaceChar(char* str, char find, char replace) {
+  char *currentPos = strchr(str,find);
+  while(currentPos) {
+    *currentPos = replace;
+    currentPos = strchr(currentPos, find);
+  }
+  return str;
+}
 
 void gitrolex_parseArgs(struct State_t *s, int argc, const char *argv[]) {
   const char *task;
@@ -45,6 +53,9 @@ void gitrolex_parseArgs(struct State_t *s, int argc, const char *argv[]) {
     }
     s->task = TRACK;
     strcpy(s->taskArgs, argv[2]);
+    // lame attempt at path sanitization
+    replaceChar(s->taskArgs, '/', '-');
+    replaceChar(s->taskArgs, '$', '-');
   }
 }
 

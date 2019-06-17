@@ -19,6 +19,22 @@ enum DatabaseError_t database_pushEntry(const char *path, struct TimeEnty_t *ent
 }
 
 enum DatabaseError_t database_getEntries(const char *path, struct TimeEnty_t *out, int *size) {
-  *size = 0;
-  return OUT_OF_SPACE;
+  char filePath[1024], line[2048];
+  bool lineDirection;
+  long lineTime;
+  FILE *f;
+  int i = 0;
+  database_prefixPath(path, filePath);
+  f = fopen(filePath, "r");
+  if(f == NULL) goto done;
+  while(fgets(line, 2048, f)) {
+    scanf(line, "%d %ld", &lineDirection, &lineTime);
+    out[i].direction = lineDirection;
+    out[i].datetime = lineTime;
+    i++;
+  }
+
+done:
+  *size = i;
+  return DB_OK;
 }

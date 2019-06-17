@@ -9,9 +9,10 @@ void database_prefixPath(const char *path, char *out) {
 
 enum DatabaseError_t database_pushEntry(const char *path, struct TimeEnty_t *entry) {
   char filePath[1024];
-  mkdir(".rolex", 0777);
+  FILE *f;
   database_prefixPath(path, filePath);
-  FILE *f = fopen(filePath, "a");
+  mkdir(".rolex", 0777);
+  f = fopen(filePath, "a");
   fprintf(f, "%d %ld\n", entry->direction, entry->datetime);
   fclose(f);
   return DB_OK;

@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 
 void printError(const char *s) {
   printf("ERROR: %s\n", s);

@@ -28,13 +28,14 @@ enum DatabaseError_t database_getEntries(const char *path, struct TimeEnty_t *ou
   f = fopen(filePath, "r");
   if(f == NULL) goto done;
   while(fgets(line, 2048, f)) {
-    scanf(line, "%d %ld", &lineDirection, &lineTime);
+    sscanf(line, "%d %ld", &lineDirection, &lineTime);
     out[i].direction = lineDirection;
     out[i].datetime = lineTime;
     i++;
   }
 
 done:
+  fclose(f);
   *size = i;
   return DB_OK;
 }

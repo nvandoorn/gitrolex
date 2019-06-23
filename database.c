@@ -13,14 +13,14 @@ enum DatabaseError_t database_pushEntry(const char *path, struct TimeEnty_t *ent
   database_prefixPath(path, filePath);
   mkdir(".rolex", 0777);
   f = fopen(filePath, "a");
-  fprintf(f, "%d %ld\n", entry->direction, entry->datetime);
+  fprintf(f, "%d %d\n", entry->direction, entry->datetime);
   fclose(f);
   return DB_OK;
 }
 
 enum DatabaseError_t database_getEntries(const char *path, struct TimeEnty_t *out, int *size) {
   char filePath[1024], line[2048];
-  bool lineDirection;
+  int lineDirection;
   long lineTime;
   FILE *f;
   int i = 0;
@@ -33,7 +33,6 @@ enum DatabaseError_t database_getEntries(const char *path, struct TimeEnty_t *ou
     out[i].datetime = lineTime;
     i++;
   }
-
 done:
   fclose(f);
   *size = i;

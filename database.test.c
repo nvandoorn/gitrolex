@@ -10,7 +10,8 @@
 const static char* SAMPLE_PATH = "features-facebook-crypto-currency";
 
 int databasePutGetTest() {
-  int size = 1024;
+  int size;
+  size = 1024;
   struct TimeEnty_t input = {
     .direction = IN,
     .datetime = time(NULL)

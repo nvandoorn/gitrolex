@@ -26,7 +26,7 @@ char* replaceChar(char* str, char find, char replace) {
 
 void gitrolex_parseArgs(struct State_t *s, int argc, const char *argv[]) {
   const char *task;
-  if(argc < 2) {
+  if(argc < 3) {
     s->task = ERROR;
     return;
   }
@@ -44,19 +44,12 @@ void gitrolex_parseArgs(struct State_t *s, int argc, const char *argv[]) {
     s->task = PLAY;
   }
   else if(!strcmp(task, "track")) {
-    // if we're tracking time,
-    // we need a branch name stored
-    // in the args
-    if(argc < 3) {
-      s->task = ERROR;
-      return;
-    }
     s->task = TRACK;
-    strcpy(s->taskArgs, argv[2]);
-    // lame attempt at path sanitization
-    replaceChar(s->taskArgs, '/', '-');
-    replaceChar(s->taskArgs, '$', '-');
   }
+  strcpy(s->taskArgs, argv[2]);
+  // lame attempt at path sanitization
+  replaceChar(s->taskArgs, '/', '-');
+  replaceChar(s->taskArgs, '$', '-');
 }
 
 enum Error_t gitrolex_status(struct State_t *s) {

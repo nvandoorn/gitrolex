@@ -20,6 +20,11 @@ test-bin: $(OBJ) $(TEST_OBJ)
 test:
 	make test-bin && ./test-bin
 
+.PHONY: install
+install:
+	cp gitrolex $(HOME)/.bin
+
+
 .PHONY: clean
 clean:
 	rm -rf *.o

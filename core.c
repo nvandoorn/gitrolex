@@ -54,22 +54,28 @@ void gitrolex_parseArgs(struct State_t *s, int argc, const char *argv[]) {
 
 // TODO return a message/status such that we can test this
 // (printing directly to the screen makes this hard)
-enum Error_t gitrolex_status(struct State_t *s) {
+enum Error_t gitrolex_status(struct State_t *s, bool force) {
   enum DatabaseError_t r;
   char msg[512];
   int size = 2048;
   struct TimeEnty_t entries[2048];
+  const char *template = "You've been working on %s for %ld seconds";
   r = database_getEntries(s->taskArgs, entries, &size);
   if(r != OK || size <= 0) {
     printError("Failed to read from db");
     return OK;
   }
   else if (size == 1) {
-    sprintf(msg, "Starting %s", s->taskArgs);
+    if(force) {
+      sprintf(msg, template, s->taskArgs, time(NULL) - entries[0].datetime);
+    }
+    else {
+      sprintf(msg, "Starting %s", s->taskArgs);
+    }
   }
   else {
     long workingTime = gitrolex_calculateWorkingTime(entries, size);
-    sprintf(msg, "You've been working on %s for %ld seconds", s->taskArgs, workingTime);
+    sprintf(msg, template, s->taskArgs, workingTime);
   }
   printInfo(msg);
   return OK;
@@ -100,7 +106,7 @@ enum Error_t pushNow(struct State_t *s, bool direction) {
     .datetime = time(NULL)
   };
   r = database_pushEntry(s->taskArgs, &entry);
-  gitrolex_status(s);
+  gitrolex_status(s, false);
   return r == DB_OK ? OK : DB_ERROR;
 }
 
@@ -121,7 +127,7 @@ void gitrolex_mapStateToTask(struct State_t *s) {
   enum Error_t r;
   switch(s->task) {
     case STATUS:
-      gitrolex_status(s);
+      gitrolex_status(s, true);
       break;
     case EXPORT:
       r = gitrolex_export(s);

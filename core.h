@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include "database.h"
 
 int gitrolex_core();
 
@@ -27,5 +28,6 @@ enum Error_t {
 };
 
 void gitrolex_parseArgs(struct State_t *s, int argc, const char *argv[]);
+long gitrolex_calculateWorkingTime(struct TimeEnty_t *t, int size);
 
 #endif

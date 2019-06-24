@@ -42,7 +42,30 @@ fail:
   return -1;
 }
 
+int calculateWorkingTimeTest() {
+  int size;
+  long result;
+  size = 4;
+  struct TimeEnty_t input[] = {
+    {
+      .direction = OUT, .datetime = 0
+    },
+    {
+      .direction = IN, .datetime = 5
+    },
+    {
+      .direction = OUT, .datetime = 15
+    },
+    {
+      .direction = IN, .datetime = 20
+    }
+  };
+  result = gitrolex_calculateWorkingTime(input, size);
+  return result != 10;
+}
+
 int main() {
   syncTest("gitrolex_parseArgs", "Failed to parse command line arguments", parseArgsTest);
+  syncTest("gitrolex_calculateWorkingTime", "Failed to calculate working time", calculateWorkingTimeTest);
   database_test();
 }

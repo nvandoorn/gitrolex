@@ -52,21 +52,45 @@ void gitrolex_parseArgs(struct State_t *s, int argc, const char *argv[]) {
   replaceChar(s->taskArgs, '$', '-');
 }
 
+// TODO return a message/status such that we can test this
+// (printing directly to the screen makes this hard)
 enum Error_t gitrolex_status(struct State_t *s) {
   enum DatabaseError_t r;
   char msg[512];
   int size = 2048;
   struct TimeEnty_t entries[2048];
   r = database_getEntries(s->taskArgs, entries, &size);
-  if(r != OK) {
-    printError("Ya blew it");
+  if(r != OK || size <= 0) {
+    printError("Failed to read from db");
+    return OK;
   }
-  struct TimeEnty_t *start = entries;
-  struct TimeEnty_t *end = &entries[size - 1];
-  long diff = end->datetime - start->datetime;
-  sprintf(msg, "You've been working on %s for %ld seconds", s->taskArgs, diff);
+  else if (size == 1) {
+    sprintf(msg, "Starting %s", s->taskArgs);
+  }
+  else {
+    long workingTime = gitrolex_calculateWorkingTime(entries, size);
+    sprintf(msg, "You've been working on %s for %ld seconds", s->taskArgs, workingTime);
+  }
   printInfo(msg);
   return OK;
+}
+
+long gitrolex_calculateWorkingTime(struct TimeEnty_t *t, int size) {
+  if (size < 2) return -1;
+  long sum;
+  sum = 0;
+  for(int i = 0; i < size - 1; i += 2) {
+    struct TimeEnty_t *start = &t[i];
+    struct TimeEnty_t *end = &t[i + 1];
+    // we should always be taking the diff
+    // between a checkout "e.g working on it" and a
+    // check in "e.eg finishing work"
+    if(start->direction != OUT || end->direction != IN) {
+      return -1;
+    }
+    sum += end->datetime - start->datetime;
+  }
+  return sum;
 }
 
 enum Error_t pushNow(struct State_t *s, bool direction) {
